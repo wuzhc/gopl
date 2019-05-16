@@ -90,6 +90,7 @@ func length(t string) time.Duration {
 }
 
 func printSongs(songs []*Song) {
+	// tabwriter.Writer绘制表格
 	const format = "%v\t%v\t%v\t%v\t\n"
 	tw := new(tabwriter.Writer).Init(os.Stdout, 0, 8, 2, ' ', 0)
 	fmt.Fprintf(tw, format, "Title", "Author", "Year", "Length")
@@ -99,4 +100,17 @@ func printSongs(songs []*Song) {
 	}
 	tw.Flush()
 	fmt.Println("\n")
+}
+
+func init() {
+	values := []int{3, 3, 8, 5, 7}
+	// []int是否已排序
+	fmt.Println(sort.IntsAreSorted(values))
+	// 对values排序
+	sort.Ints(values)
+	fmt.Println(sort.IntsAreSorted(values))
+	sort.Sort(sort.Reverse(sort.IntSlice(values)))
+	fmt.Println(values)
+	fmt.Println(sort.IntsAreSorted(values))
+	fmt.Println("\n\n")
 }
