@@ -56,7 +56,6 @@ func SearchIssues(terms []string) (*SearchResult, error) {
 
 	// 请求失败关闭resp.Body
 	if resp.StatusCode != http.StatusOK {
-		resp.Body.Close()
 		return nil, fmt.Errorf("search query failed :%s\n", resp.Status)
 	}
 

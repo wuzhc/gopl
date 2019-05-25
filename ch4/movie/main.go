@@ -18,6 +18,7 @@ func main() {
 		{Title: "复仇者联盟4", Year: 2019, Color: true, Actors: []string{"黑寡妇", "美国队长"}},
 	}
 
+	// go结构体解析成json
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println(err)
