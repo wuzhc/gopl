@@ -5,17 +5,34 @@ import (
 	"time"
 )
 
+var an, bn int
+
 func main() {
-	ch := make(chan int)
+	a := make(chan struct{})
+	b := make(chan struct{})
+
 	go func() {
-		for c := range ch {
-			fmt.Println(c)
+		for {
+			select {
+			case <-b:
+				bn++
+			default:
+				a <- struct{}{}
+			}
 		}
 	}()
 
-	// for i := 0; i < 10; i++ {
-	// ch <- i
-	// }
-	// close(ch)
-	time.Sleep(3 * time.Second)
+	go func() {
+		for {
+			select {
+			case <-a:
+				an++
+			default:
+				b <- struct{}{}
+			}
+		}
+	}()
+
+	time.Sleep(1 * time.Second)
+	fmt.Printf("an:%v, bn:%v\n", an, bn)
 }
