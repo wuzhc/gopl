@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"log"
 	"os/exec"
+	"time"
 )
 
 func main() {
-	err, stdout, stderr := ShellExec("echo \"hello world\" >> text.txt")
+	err, stdout, stderr := ShellExec("ls -la")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -24,6 +25,19 @@ func ShellExec(command string) (error, string, string) {
 	cmd := exec.Command("bash", "-c", command)
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
-	err := cmd.Run()
+	err := cmd.Start()
+
+	done := make(chan error)
+	go func() {
+		done <- cmd.Wait()
+	}()
+
+	select {
+	case <-time.After(5 * time.Second):
+
+		log.Fatalln("it is timeout")
+	case err = <-done:
+	}
+
 	return err, stdout.String(), stderr.String()
 }
