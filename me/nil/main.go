@@ -43,6 +43,10 @@ func main() {
 		fmt.Println("var v5 map[string]int == nil")
 	}
 
+	// panic: assignment to entry in nil map
+	// v5["sss"] = 1
+	// fmt.Println(v5)
+
 	// var v6 = make(map[string]int) != nil
 	var v6 = make(map[string]int)
 	if v6 == nil {
