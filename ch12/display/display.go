@@ -7,16 +7,6 @@ import (
 	"strconv"
 )
 
-func main() {
-	v := []int{1, 2, 3, 4}
-	display("v", reflect.ValueOf(v))
-
-	v1 := make(map[string]string)
-	v1["name"] = "wuzhc"
-	v1["address"] = "guangzhou"
-	display("v1", reflect.ValueOf(v1))
-}
-
 func Display(name string, v interface{}) {
 	display(name, reflect.ValueOf(v))
 }
@@ -55,6 +45,26 @@ func display(path string, v reflect.Value) {
 		//对map的处理
 		for _, k := range v.MapKeys() {
 			display(fmt.Sprintf("%s[%s]", path, k.String()), v.MapIndex(k))
+		}
+	case reflect.Struct:
+		//对struct的处理
+		for i := 0; i < v.NumField(); i++ {
+			display(fmt.Sprintf("%s.%s", path, v.Type().Field(i).Name), v.Field(i))
+		}
+	case reflect.Ptr:
+		// 处理指针
+		if v.IsNil() {
+			fmt.Printf("%s=nil\n", path)
+		} else {
+			display(fmt.Sprintf("*%s", path), v.Elem())
+		}
+	case reflect.Interface:
+		// 处理接口
+		if v.IsNil() {
+			fmt.Printf("%s=nil\n", path)
+		} else {
+			fmt.Printf("%s.type=%s\n", path, v.Elem().Type())
+			display(path+".value", v.Elem())
 		}
 	default:
 		fmt.Printf("%s=%s\n", path, formatAtom(v))
