@@ -50,11 +50,17 @@ func main() {
 	}
 	defer in.Close()
 
-	in.WriteString("## 目录\n")
+	writeHeader(in)
 	report := template.Must(template.New("hellow").Parse(templ))
 	if err := report.Execute(in, items); err != nil {
 		errExit(err)
 	}
+}
+
+func writeHeader(in *os.File) {
+	in.WriteString("## 目录自动生成器\n")
+	in.WriteString("- [https://github.com/wuzhc/gopl/blob/master/me/automatic-summary-generate/main.go](https://github.com/wuzhc/gopl/blob/master/me/automatic-summary-generate/main.go)\n")
+	in.WriteString("## 目录\n")
 }
 
 // 读取目录
