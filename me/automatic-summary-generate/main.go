@@ -143,7 +143,7 @@ func errExit(msg ...interface{}) {
 		s := strings.Repeat("%v ", len(msg))
 		errMsg = fmt.Sprintf(s, msg...)
 	} else {
-		errMsg = fmt.Sprint(msg)
+		errMsg = "Unkown"
 	}
 
 	fmt.Println(errMsg)
